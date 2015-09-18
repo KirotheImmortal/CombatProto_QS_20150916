@@ -5,190 +5,169 @@ using UnityEngine.Events;
 
 public class StateManager : MonoBehaviour
 {
-    public QStateMachine FSM = new QStateMachine();
-
-
-    public GameObject NextPlayer;
+    //  public QStateMachine FSM = new QStateMachine();
 
     public string init = "INIT";
     public string start = "START";
     public string main = "MAIN";
     public string end = "END";
 
+    public delegate void InitList();
+    public delegate void StartList();
+    public delegate void MainList();
+    public delegate void EndList();
     /// <summary>
-    /// Getter/Setter For the Delegates of init,start,main,end QStates created in the Start code
+    /// Init Void Delegate
     /// </summary>
-    public QStates.IEnumeratorFunctionList initIeFunc
-    {
-        get
-        {
-            return FSM.getState(init).die_stateFunctions;
-        }
-        set
-        {
-            FSM.getState(init).die_stateFunctions = value;
-        }
-    }
+    public InitList initList;
     /// <summary>
-    /// Getter/Setter For the Delegates of init,start,main,end QStates created in the Start code
+    /// Start Void Delegate
     /// </summary>
-    public QStates.IEnumeratorFunctionList startIeFunc
-    {
-        get
-        {
-            return FSM.getState(start).die_stateFunctions;
-        }
-        set
-        {
-            FSM.getState(start).die_stateFunctions = value;
-        }
+    public StartList startList;
+    /// <summary>
+    /// Main Void Delegate
+    /// </summary>
+    public MainList mainList;
+    /// <summary>
+    /// End Void Delegate
+    /// </summary>
+    public EndList endList;
 
-    }
-    /// <summary>
-    /// Getter/Setter For the Delegates of init,start,main,end QStates created in the Start code
-    /// </summary>
-    public QStates.IEnumeratorFunctionList mainIeFunc
-    {
-        get
-        {
-            return FSM.getState(main).die_stateFunctions;
-        }
-        set
-        {
-            FSM.getState(main).die_stateFunctions = value;
-        }
-    }
-    /// <summary>
-    /// Getter/Setter For the Delegates of init,start,main,end QStates created in the Start code
-    /// </summary>
-    public QStates.IEnumeratorFunctionList endIeFunc
-    {
-        get
-        {
-            return FSM.getState(end).die_stateFunctions;
-        }
-        set
-        {
-            FSM.getState(end).die_stateFunctions = value;
-        }
-    }
+    QStates s_Init;
+    QStates s_Start;
+    QStates s_Main;
+    QStates s_End;
 
-    /// <summary>
-    /// Getter/Setter For the Delegates of init,start,main,end QStates created in the Start code
-    /// </summary>
-    public QStates.VoidFunctionList initVfunc
-    {
-        get
-        {
-            return FSM.getState(init).dv_stateFunctions;
+    QStates currentState;
 
-        }
+    string playState
+    {
         set
         {
-            FSM.getState(init).dv_stateFunctions = value;
+            if (value == init)
+            {
+                if (initList != null)
+                {
+                    initList();
+                   // print(gameObject.name + init);
+                }
+            }
+            else if (value == start)
+            {
+                if (startList != null)
+                {
+                    startList();
+                   // print(gameObject.name + start);
+                }
+            }
+            else if (value == main)
+            {
+                if (mainList != null)
+                {
+                    mainList();
+                 //   print(gameObject.name + main);
+                }
+            }
+            else if (value == end)
+            {
+                if (endList != null)
+                {
+                    endList();
+                  //  print(gameObject.name + end);
+                }
+            }
+
 
         }
     }
-    /// <summary>
-    /// Getter/Setter For the Delegates of init,start,main,end QStates created in the Start code
-    /// </summary>
-    public QStates.VoidFunctionList startVfunc
-    {
-        get
-        {
-            return FSM.getState(start).dv_stateFunctions;
 
-        }
+    QStates nextState
+    {
         set
         {
-            FSM.getState(start).dv_stateFunctions = value;
-
-        }
-    }
-    /// <summary>
-    /// Getter/Setter For the Delegates of init,start,main,end QStates created in the Start code
-    /// </summary>
-    public QStates.VoidFunctionList mainVfunc
-    {
-        get
-        {
-            return FSM.getState(main).dv_stateFunctions;
-
-        }
-        set
-        {
-            FSM.getState(main).dv_stateFunctions = value;
-
-        }
-    }
-    /// <summary>
-    /// Getter/Setter For the Delegates of init,start,main,end QStates created in the Start code
-    /// </summary>
-    public QStates.VoidFunctionList endVfunc
-    {
-        get
-        {
-            return FSM.getState(end).dv_stateFunctions;
-
-        }
-        set
-        {
-            FSM.getState(end).dv_stateFunctions = value;
+            if (currentState != null)
+            {
+                if (currentState.sname == value.sprev || value.sprev == null)
+                {
+                    currentState = value;
+                    playState = value.sname;
+                }
+            }
+            else
+            {
+                currentState = value;
+                playState = value.sname;
+            }
         }
     }
 
+
     /// <summary>
-    /// Establishes the FSM QStates this script uses
+    /// Establishes all QStates
+    /// based on init,start,main strings
     /// </summary>
-    [ContextMenu("Start")]
+    void Awake()
+    {
+
+        s_Init = new QStates(init, null);
+        s_Start = new QStates(start, init);
+        s_Main = new QStates(main, start);
+        s_End = new QStates(end, null);
+
+    }
+    /// <summary>
+    /// Starts the State Manager
+    /// </summary>
     void Start()
     {
-        FSM.addState(init, null);
-        FSM.addState(start, init);
-        FSM.addState(main, start);
-        FSM.addState(end, null);
-
-
-
-
-        if (NextPlayer.GetComponent<StateManager>().FSM.getState(init) == null)
-            FSM.nextState = FSM.getState(init);
-        else
-        {
-            if (NextPlayer.GetComponent<StateManager>().FSM.currentState != NextPlayer.GetComponent<StateManager>().FSM.getState(init))
-                FSM.nextState = FSM.getState(init);
-            else
-                FSM.nextState = FSM.getState(end);
-        }
-
-
-        endVfunc += TurnChange;
-
-
-       // print("Start finished");
+        InvokeStateshift();
     }
+
 
     /// <summary>
-    /// Changes State based on state param
+    /// Jumps to End State
     /// </summary>
-    /// <param name="state">Name of state</param>
-    [ContextMenu("Invoke End")]
     public void EndState()
     {
-        StateShift(end);
+        nextState = s_End;
     }
+    //public void StateShift(string state)
+    //{
+    //    print(gameObject.name + state);
+    //    FSM.nextState = FSM.getState(state);
 
-    public void StateShift(string state)
+    //}
+    /// <summary>
+    /// Goes to next State when called;
+    /// 
+    /// this process automaticly starts delegates
+    /// 
+    /// </summary>
+    public void InvokeStateshift()
     {
-        print(gameObject.name + state);
-        FSM.nextState = FSM.getState(state);
-        
-    }
+        if (currentState != null)
+        {
+            if (currentState == s_Init)
+            {
+                nextState = s_Start;
+            }
+            else if (currentState == s_Start)
+            {
+                nextState = s_Main;
 
-    void TurnChange()
-    {
-        NextPlayer.GetComponent<StateManager>().StateShift(init);
-        //print("Turn Changed");
+            }
+            else if (currentState == s_Main)
+            {
+                nextState = s_End;
+
+            }
+            else if (currentState == s_End)
+            {
+                nextState = s_Init;
+            }
+        }
+        else
+            nextState = s_Init;
     }
 
 }

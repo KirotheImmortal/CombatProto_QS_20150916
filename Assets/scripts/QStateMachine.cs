@@ -51,14 +51,6 @@ public class QStates
     /// Delegates of void Function()
     /// </summary>
     public VoidFunctionList dv_stateFunctions;
-
-    public delegate IEnumerator IEnumeratorFunctionList();
-    /// <summary>
-    /// Delagates of IEnumerator Function()
-    /// </summary>
-    public IEnumeratorFunctionList die_stateFunctions;
-
-
 }
 
 /// <summary>
@@ -78,7 +70,7 @@ public class QStateMachine
     /// When Modified the state will play its delegates if delegates have functions stored
     /// NOTE: Void functions then IEnumerable functions
     /// </summary>
-    QStates current
+    virtual public QStates current
     {
         get
         { return cur; }
@@ -88,12 +80,8 @@ public class QStateMachine
             if (current.dv_stateFunctions != null)
                 current.dv_stateFunctions();
 
-            if (current.die_stateFunctions != null)
-                current.die_stateFunctions();
-
         }
     }
-
     public QStates currentState
         {
         get { return cur; }
@@ -101,7 +89,7 @@ public class QStateMachine
     /// <summary>
     /// State intended to change to. If allowed the current state will be changed to the value the nextState was changed to.
     /// </summary>
-    public QStates nextState
+    virtual public QStates nextState
     {
         get
         { return nex; }
@@ -118,6 +106,7 @@ public class QStateMachine
         }
 
     }
+
 
     /// <summary>
     /// Creates a QState based on the params passed in.
