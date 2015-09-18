@@ -5,11 +5,12 @@ using System.Collections.Generic;
 public class ClickSetPosition : MonoBehaviour
 {
     public Coroutine coroutine;
+    public Coroutine_Bullet bCoroutine;
     public List<GameObject> Bullets = new List<GameObject>();
     public GameObject Bullet;
     
 
-    void OnMouse()
+    void OnMouseEvents()
     {
         Vector3 playerPos = coroutine.GetComponentInParent<Transform>().position;
         //move
@@ -23,7 +24,6 @@ public class ClickSetPosition : MonoBehaviour
 
             //Vector3 roundedOrigin = new Vector3(ray.origin.x, (int)ray.origin.y, ray.origin.z);
             //print("ray origin: " + ray.origin);
-
 
             //Vector3 cam = Camera.main.transform.position;            
             //print("original cam vector: " + cam);
@@ -56,21 +56,39 @@ public class ClickSetPosition : MonoBehaviour
         // shoot
         if(Input.GetMouseButtonDown(1))
         {
-            Vector3 pos = new Vector3(0, 0, 0);
+            //instantiate a bullet at the position of the ship's gun barrel
             Vector3 gunPos = GameObject.Find("Barrel").transform.position;
-            print(gunPos);
 
-            //instantiate bullet
             GameObject g = Instantiate(Bullet, gunPos, Quaternion.identity) as GameObject;
             Bullets.Add(g);
             g.name = "Bullet " + Bullets.Count;
+
+            //coroutine
+            bCoroutine = g.GetComponent<Coroutine_Bullet>();
+
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            RaycastHit hit;
+
+            Physics.Raycast(ray, out hit);
+
+            if (hit.collider.gameObject == gameObject && hit.collider.gameObject.name == "movementPlane")
+            {
+                Vector3 newPosition = hit.point;
+                newPosition.y = g.transform.position.y;
+                bCoroutine.bulletTarget = newPosition;
+            }
         }
     }
 
     void Update()
     {
-        OnMouse();
+        OnMouseEvents();
     }
+    //void Start()
+    //{
+    //    coroutine.GetComponentInParent<StateManager>().mainVfunc += OnMouseEvents;
+    //}
 
 
     //void OnMouseDown()

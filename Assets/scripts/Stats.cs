@@ -9,7 +9,7 @@ public class Stats : MonoBehaviour
     void Start()
     {
         health = 100;
-        maxFuel = 100;
+        maxFuel = 200;
         currentFuel = maxFuel;
 
         //fuel units per step
