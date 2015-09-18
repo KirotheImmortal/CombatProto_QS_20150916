@@ -249,7 +249,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 4.14726686
+  m_Radius: 8.40152359
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &647493205
 MeshRenderer:
@@ -317,7 +317,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93c046c43c23d134d84c350b720c8b7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gpull: 0
+  gpull: 192.139999
 --- !u!1 &1281612645
 GameObject:
   m_ObjectHideFlags: 0
@@ -495,6 +495,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: .25
+  MaxDistance: 24.2000008
+  Damage: 0
   live: 1
 --- !u!23 &1967028798
 MeshRenderer:
@@ -546,7 +548,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1967028796}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.0900002, y: 4.69000006, z: -5.76000023}
+  m_LocalPosition: {x: 15.4899998, y: 4.69000006, z: -13.6700001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -564,5 +566,5 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 126
+  m_Constraints: 14
   m_CollisionDetection: 0
