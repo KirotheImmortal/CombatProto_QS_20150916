@@ -46,9 +46,16 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\scripts\Bullet.cs" />
      <Compile Include="Assets\scripts\ClickSetPosition.cs" />
+     <Compile Include="Assets\scripts\Collisions.cs" />
      <Compile Include="Assets\scripts\Coroutine.cs" />
+     <Compile Include="Assets\scripts\Coroutine_Bullet.cs" />
+     <Compile Include="Assets\scripts\Gravity.cs" />
+     <Compile Include="Assets\scripts\QStateMachine.cs" />
+     <Compile Include="Assets\scripts\StateManager.cs" />
      <Compile Include="Assets\scripts\Stats.cs" />
+     <Compile Include="Assets\scripts\movementGUI.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
