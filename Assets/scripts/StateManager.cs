@@ -87,16 +87,16 @@ public class StateManager : MonoBehaviour
         {
             if (currentState != null)
             {
-                if (currentState.sname == value.sprev || value.sprev == null)
+                if (currentState.s_name == value.s_prev || value.s_prev == null)
                 {
                     currentState = value;
-                    playState = value.sname;
+                    playState = value.s_name;
                 }
             }
             else
             {
                 currentState = value;
-                playState = value.sname;
+                playState = value.s_name;
             }
         }
     }
